@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+<link href="/static/css/style.css" rel="stylesheet" type="text/css">
+<link href="/static/multiple-select/multiple-select.css" rel="stylesheet">
+<script src="/static/js/jquery.min.js" type="text/javascript"></script>
+<script src="/static/multiple-select/jquery.multiple.select.js"></script>
+<script src="/static/js/admin.js" type="text/javascript"></script>
+</head>
+<body>
+<script type="text/javascript">
+function change_info(){
+        var args = $("#key").serialize();
+        var treeid = $("#treeid").val();
+        window.location = window.location.pathname + "?treeid=" + treeid + "&" + args;
+    }
+
+$(document).ready(function() {
+    $("#key").keydown(function(e){
+        if(e.keyCode==13){
+            change_info()
+        }
+    });
+    $('#mount_status').change(function(){
+        var args = $(this).serialize();
+        //var status = $(this).children('option:selected').text();
+        var treeid = $("#treeid").val();
+        window.location = window.location.pathname + "?treeid=" + treeid + "&" + args;
+    });
+
+});
+</script>
+<div class="adminTable">
+<section class="content-header"> 
+<input id="search" name="search" type="submit" style="float:right" value="搜索" class="Btn" onclick="change_info()"/><input id="key" name="key" type="text" class="form_2" style="float:right" value="{{ key }}"/>
+{% if show_mount_status %}
+<select name="mount_status" id="mount_status" style="float:right" class="form_2 w150">
+    <option value='' selected="selected">显示所有主机</option>
+    <option value=1 {% ifequal mount_status '1' %} selected="selected"{% endifequal %}>只显示已挂载主机</option>
+    <option value=0 {% ifequal mount_status '0' %} selected="selected"{% endifequal %}>只显示未挂载主机</option>
+</select>
+{% endif %}
+<input id="treeid" name="treeid" type="hidden" class="form_2 searchIpnutBtn" value="{{ treeid }}">
+    <h1>{{title}}</h1>
+</section>当前位置:{{ treeid|get_node_path_by_treeid }}
+<table width="100%" border="1" cellspacing="0" cellpadding="0">
+<thead>
+  <tr>
+    <th align="left" valign="middle">主机名</th>
+    <th align="left" valign="middle">内网IP</th>
+    <th align="left" valign="middle">公网IP</th>
+    <!--<th align="left" valign="middle">机房</th>-->
+    <th align="left" valign="middle">操作系统</th>
+    <th align="left" valign="middle">CPU核数</th>
+    <th align="left" valign="middle">内存(G)</th>
+    <th align="left" valign="middle">磁盘(G)</th>
+    <th align="left" valign="middle">挂载节点</th>
+  </tr>
+</thead>
+<tbody>
+{% load pagination_tags %}
+{% autopaginate rets pagenum %}
+{% for ret in rets %}
+  <tr id={{ret.username}}>
+    <td align="left" valign="middle">{{ret.hostname}}</td>
+    <td align="left" valign="middle">{{ret.ip}}</td>
+    <td align="left" valign="middle">{{ret.other_ip}}</td>
+    <!--<td align="left" valign="middle">{{ret.idc.zh_name}}</td>-->
+    <td align="left" valign="middle">{{ret.os}}</td>
+    <td align="left" valign="middle">{{ret.cpu|get_cpu_num}}</td>
+    <td align="left" valign="middle">{{ret.memory}}</td>
+    <td align="left" valign="middle">{{ret.disk}}</td>
+    <td align="left" valign="middle"><span style="font-size:12px;">{% for tree in ret.trees.all %}
+        {% ifequal deep 0 %}
+            {% ifequal tree.en_name 'BackupPool' %}{{ tree.id|get_node_path_by_treeid }}<br>{% endifequal %}
+        {% else %}
+            {% ifnotequal tree.en_name 'BackupPool' %}{{ tree.id|get_node_path_by_treeid }}<br>{% endifnotequal %}
+        {% endifequal %}
+    {% endfor %}</span></td>
+  </tr>
+{% endfor %}
+</tbody>
+</table>
+{% paginate %}
+</div>
+</body>
+</html>

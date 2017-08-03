@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+<link href="/static/css/style.css" rel="stylesheet" type="text/css">
+<link href="/static/multiple-select/multiple-select.css" rel="stylesheet">
+<script src="/static/js/jquery.min.js" type="text/javascript"></script>
+<script src="/static/multiple-select/jquery.multiple.select.js"></script>
+<script src="/static/js/admin.js" type="text/javascript"></script>
+</head>
+<body>
+<script type="text/javascript">
+function change_info(){
+        var args = $("form").serialize();
+        var treeid = $("#treeid").val();
+        window.location = window.location.pathname + "?treeid=" + treeid + "&" + args;
+    }
+
+$(document).ready(function() {
+    $("#load_num").keydown(function(e){
+        if(e.keyCode==13){
+            change_info()
+        }
+    });
+    $("#cpu_io_num").keydown(function(e){
+        if(e.keyCode==13){
+            change_info()
+        }
+    });
+    $("#cpu_idle_num").keydown(function(e){
+        if(e.keyCode==13){
+            change_info()
+        }
+    });
+    $("#mem_used_num").keydown(function(e){
+        if(e.keyCode==13){
+            change_info()
+        }
+    });
+    $("#sort_key").change(function(e){
+        change_info()
+    });
+
+});
+</script>
+<div class="adminTable">
+<section class="content-header"> 
+<input id="search" name="search" type="submit" style="float:right" value="查询" class="Btn" onclick="change_info()"/>
+<span style="float:right"><form>负载小于：<input id="load_num" name="load_num" type="text" class="form_1"  value="{{ load_num }}"/> &nbsp;&nbsp;内存使用率小于(%)：<input id="mem_used_num" name="mem_used_num" type="text" class="form_1"  value="{{ mem_used_num }}"/>&nbsp;&nbsp;CPU IO等待时间小于(s)：<input id="cpu_io_num" name="cpu_io_num" type="text" class="form_1"  value="{{ cpu_io_num }}"/>&nbsp;&nbsp;CPU空闲率大于(%)：<input id="cpu_idle_num" name="cpu_idle_num" type="text" class="form_1"  value="{{ cpu_idle_num }}"/>&nbsp;&nbsp;排序：<select name="sort_key" id="sort_key" class="form_2 w150">{% for ret in sort_list %}<option {% ifequal sort_key ret %} selected="selected"{% endifequal %}>{{ ret }}</option>{% endfor %}</select></form></span>
+<input id="treeid" name="treeid" type="hidden" class="form_2" value="{{ treeid }}">
+    <h1>{{title}}</h1>
+</section>当前位置:{{ treeid|get_node_path_by_treeid }}<br><br>
+说明：数据来源Falcon最近一周监控数据取最值，每天凌晨自动更新数据，系统默认定义低负荷主机为：一周内load.1min最大值小于{{def_load_num}}，mem.used.percent最大值小于{{def_mem_used_num}}%，cpu.iowait最大值小于{{def_cpu_io_num}}，cpu.idle最小值大于{{def_cpu_idle_num}}，满足以上所有条件的主机，可手动修改条件进行过滤；<br>
+<table width="100%" border="1" cellspacing="0" cellpadding="0">
+<thead>
+  <tr>
+    <th align="left" valign="middle">主机名</th>
+    <th align="left" valign="middle">内存使用率(mem.used.percent)</th>
+    <th align="left" valign="middle">负载(load.1min)</th>
+    <th align="left" valign="middle">CPU空闲率(cpu.idle)</th>
+    <th align="left" valign="middle">CPU IO等待(cpu.iowait)</th>
+  </tr>
+</thead>
+<tbody>
+{% load pagination_tags %}
+{% autopaginate idle_host_list pagenum %}
+{% for ret in idle_host_list %}
+  <tr>
+    <td align="left" valign="middle">{{ret.host}}</td>
+    <td align="left" valign="middle">{{ret|get_item:'mem.used.percent'|floatformat:"2"}}</td>
+    <td align="left" valign="middle">{{ret|get_item:'load.1min'|floatformat:"2"}}</td>
+    <td align="left" valign="middle">{{ret|get_item:'cpu.idle'|floatformat:"2"}}</td>
+    <td align="left" valign="middle">{{ret|get_item:'cpu.iowait'|floatformat:"2"}}</td>
+  </tr>
+{% endfor %}
+</tbody>
+</table>
+{% paginate %}
+</div>
+</body>
+</html>

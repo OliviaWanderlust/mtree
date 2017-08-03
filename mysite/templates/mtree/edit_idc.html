@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+<link href="/static/css/style.css" rel="stylesheet" type="text/css">
+<link href="/static/multiple-select/multiple-select.css" rel="stylesheet">
+<script src="/static/js/jquery.min.js" type="text/javascript"></script>
+<script src="/static/multiple-select/jquery.multiple.select.js"></script>
+<script src="/static/js/admin.js" type="text/javascript"></script>
+</head>
+<body>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#submit').click(function(){
+        if(confirm("确认操作吗？")){ 
+            $.post("/mtree/ajax_mtree", $("form").serialize(), function(json){ 
+                alert(json);
+                window.close();
+                window.parent.opener.location.reload();
+            });
+            return false;
+        }else {
+            return false;
+        }
+    });
+});
+</script>
+<div class="adminTable">
+<div class="infoForm">
+<h3>{{ title }}</h3>
+<form id="infoForm">
+<input name="id" type="hidden" value="{{ id }}">
+<input name="act" type="hidden" value="{{ act }}">
+<label class="control-label" for="inputEmail">机房名称英文简写</label>
+<input name="name" type="text" class="form_2 searchIpnutBtn" value="{{ret.name}}">
+<br><br>
+<label class="control-label" for="inputEmail">机房名称</label>
+<input name="zh_name" type="text" class="form_2 searchIpnutBtn" value="{{ret.zh_name}}">
+<br><br>
+<label class="control-label" for="inputEmail">带宽(M)</label>
+<input name="bandwidth" type="text" class="form_2 searchIpnutBtn" value="{{ret.bandwidth}}">
+<br><br>
+<label class="control-label" for="inputEmail">联系人</label>
+<input name="linkman" type="text" class="form_2 searchIpnutBtn" value="{{ret.linkman}}">
+<br><br>
+<label class="control-label" for="inputEmail">联系电话</label>
+<input name="phone" type="text" class="form_2 searchIpnutBtn" value="{{ret.phone}}">
+<br><br>
+<label class="control-label" for="inputEmail">机房地址</label>
+<input name="address" type="text" class="form_4 searchIpnutBtn" value="{{ret.address}}">
+<br><br>
+<label class="control-label" for="inputEmail">网段</label>
+<input name="network" type="text" class="form_2 searchIpnutBtn" value="{{ret.network}}">
+<br><br>
+<label class="control-label" for="inputEmail">运营商</label>
+<input name="operator" type="text" class="form_2 searchIpnutBtn" value="{{ret.operator}}">
+<br><br>
+<label class="control-label" for="inputEmail">备注</label>
+<input name="comment" type="text" class="form_2 searchIpnutBtn" value="{{ret.comment}}">
+<br><br>
+<input id="submit" type="submit" value="提交" class="Btn" />
+</form>
+</div>
+</div>
+</body>
+</html>

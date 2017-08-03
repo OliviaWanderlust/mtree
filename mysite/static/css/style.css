@@ -1,0 +1,167 @@
+/*登录*/
+.loginLogo{ width:322px; height:65px; position:absolute; left:50%; margin-left:-161px; top:20%;}
+.loginWrap{ width:290px; position:absolute; left:50%; margin-left:-145px; top:40%;}
+.loginWrap li{ width:290px; height:28px; margin-bottom:20px; position:relative;}
+.loginWrap li .loginT{ float:left; width:60px; color:#fff; height:28px; line-height:28px;}
+.loginWrap li .loginInput{ float:right; width:230px; height:28px;}
+.loginWrap li .loginInput .form_1{ height:28px; width:225px; background:#fff; border-radius:3px; border:none; padding-left:5px;}
+.loginWrap li .loginInput .form_0{ height:28px; width:70px; background:#fff; border-radius:3px; border:none; padding-left:5px;}
+.loginWrap li .loginInput label{ display: inline-block; float:left; height:28px;}
+.loginWrap li .loginInput label input{ width:12px; height:12px; display:inline-block; float:left; vertical-align:middle; overflow:hidden; margin-top:7px;}
+.loginWrap li .loginInput label span{ float:left; display:inline-block; vertical-align:middle; color:#fff; padding-left:5px; line-height:28px;}
+.loginWrap li .loginInput .loginBtn{ float:right; width:60px; height:28px; background:#4eaa39; color:#fff; border-radius:5px; border:none; cursor:pointer;}
+.loginWrap li .notic{ height:28px; line-height:28px; width:100%; color:#fff; position:absolute; top:0; left:300px;}
+.loginWrap li .notic i{ background:url(../img/cross_circle.png) no-repeat; width:16px; height:16px; float:left; display:inline-block; margin:6px 5px 0 0;}
+.loginWrap li .notic span{ display:inline-block; float:left;}
+.yzmBox .form_0{float:left; margin-right:5px;}
+/*公用*/
+.adminWrap{ width:100%; height:100%;}
+.sideLeft{ width:220px; float:left;}
+.logo{ width:190px; margin:25px 0 10px 7px;}
+.logo img{ width:190px; height:auto;}
+.welcome{ color:#cfe8f7;  line-height:20px; margin:0 0 3px 10px;}
+.welcome a{ color:#cfe8f7;}
+.welcome a span{ color:#52b9fb;}
+.welcome a.noLine:hover{ text-decoration:none;}
+.user{ height:20px; line-height:20px; color:#cfe8f7; margin-left:10px;}
+.user a{ color:#cfe8f7;}
+.sideBar{ width:100%; margin-top:20px;}
+.sideBar li{ height:auto; margin-bottom:10px;}
+.sideBar li .nav_1ji{ padding-left:10px; background:#084f95; height:32px; line-height:32px; cursor:pointer; border-bottom:1px solid #05498b; border-top:1px solid #05498b;}
+.sideBar li .nav_1ji a,.sideBar li .nav_1ji a:hover{ color:#fff; text-decoration:none; display:block;}
+.sideBar li .nav_1ji h3{ color:#fff; font-size:14px;}
+.sideBar li .nav_2ji{ height:0; overflow:hidden;}
+.sideBar li .nav_2ji p{  height:30px; line-height:30px; color:#fff;}
+.sideBar li .nav_2ji p a{ display:inline-block;padding-left:30px;  color:#ccc;}
+.sideBar li .nav_2ji p a.on{ background:url(../img/icon.png) no-repeat 11px 7px; color:#fff; font-weight:bold;}
+.sideBar li .nav_2ji p a:hover{ color:#cfe8f7; text-decoration:none;}
+.sideBar .on .nav_1ji{ background:#04386d;}
+.rightWrap{ margin-left:220px; padding:40px 30px 0; background:#f5f5f5; height:100%; min-width:1000px;}
+.footer{ margin-top:40px; height:40px; line-height:40px; color:#333; padding:10px 0;}
+.footer a{ color:#0088cc;}
+.opeBtn{ display:inline-block;height:24px; line-height:24px; padding:0 5px; color:#fff; border-radius:3px; background:#005dad; font-family:"微软雅黑"; margin:0 0 0 5px;}
+.opeBtn:hover{ color:#fff; text-decoration:none;}
+.Btn:hover{ color:#fff; text-decoration:none;}
+.Btn.cancel{ background:#aaa;}
+/*.Btn.popAdd{ background:#ff8800;}*/
+/*dashboard*/
+.homeUl ,.homeUl li{list-style:circle inside;}
+.homeUl li{height:25px; line-height:25px;}
+.text{ color:#333;}
+.text h2{ font-size:24px; line-height:36px; margin-bottom:30px;}
+.text h3{ font-size:18px; line-height:24px;}
+.text p{ line-height:24px;}
+.text .m{ margin:20px 0;}
+.text .mt{ margin-top:50px;}
+/*添加minions*/
+.promptBox{ background:#dbe3ff; border:1px solid #a2b4ee; border-bottom:none; padding:10px 10px 10px 36px; position:relative;}
+.promptBox i{ background:url(../img/information.png) no-repeat; width:16px; height:16px; position:absolute; display:inline-block; top:14px; left:12px;}
+.promptCon p{ line-height:24px; color:#333;}
+.promptCon p .green{ color:#39ac00;}
+.promptCon p .h{ color:#cc0000;}
+//.adminTable{ background:#fff; border:1px solid #ccc; color:#333; margin-bottom:20px;}
+.adminTable{ background:#ecf0f5; border:0px solid #ccc; color:#333; margin:-5px; padding-left:15px; padding-right:15px; padding-bottom:15px;}
+.addMinions{ background:#fff; border:1px solid #ccc; padding:15px; margin-bottom:20px; color:#333}
+.addMinions h2{ font-size:16px; height:30px; line-height:30px; margin-bottom:20px;}
+.addMinions h3{ font-size:14px; height:30px; line-height:30px;}
+.minionsForm{ height:30px; line-height:30px; margin:10px 0;}
+.minionsForm span{ display:inline-block; padding-right:5px;}
+.minionsForm .red{ color:#cc0000; padding-left:10px;}
+.adminTable h2{ font-size:16px; height:30px; line-height:30px; padding:15px 0 15px 15px;}
+.adminTable table{ border-bottom:1px solid #ccc; }
+.adminTable table tr.even{ background:#f3f3f3;}
+.adminTable table td,.adminTable table th{ border-top:1px solid #ccc; padding:1px;}
+.adminTable table th{ font-size:14px;}
+.adminTable table .red{ color:#cc0000;}
+.adminTable table .green{ color:#39ac00;}
+.adminPop  table{ border-bottom:1px solid #ccc; }
+.adminPop  table tr.even{ background:#f3f3f3;}
+.adminPop  table td,.adminTable table th{ border-top:1px solid #ccc; padding:5px;}
+.adminPop  table th{ font-size:12px;}
+.adminPop  table .red{ color:#cc0000;}
+.adminPop  table .green{ color:#39ac00;}
+.detail{height:18px; line-height:18px;  overflow:hidden; text-overflow:ellipsis; position:relative;}
+.detailInfo{position:fixed; background:#999; padding:10px 15px; width:400px; line-height:20px; top:0px; left:0px; display:none;}
+.tableTitle{ font-size:14px; font-weight:bold; padding: 12px 0 10px 10px; color:#000; background:#f0f6ff;}
+.handlerBox{ height:30px;  position:absolute; top:0; left:0;}
+.handlerBox p{padding:0 0 0 10px; height:30px;}
+.handlerBox .edit{ display:inline-block;background: #ff8800; border-radius: 3px; color:#fff; cursor: pointer;font-family: "微软雅黑"; height: 24px; line-height: 24px; padding: 0 15px; margin-right:20px;}
+.handlerBox .edit:hover{ text-decoration:none;}
+.handlerBox span{height:24px; line-height:24px; font-size:14px;}
+/*资产信息*/
+//.infoForm{  padding-left:15px; margin:10px 0;}
+.infoForm{}
+.infoForm a{ margin-bottom:10px;}
+.Btn{ background:#005DAD; border:none; padding:0 5px; height:30px; line-height:28px; text-align:center; border-radius:3px; color:#fff; cursor:pointer; margin-left:5px; display:inline-block; font-family:"微软雅黑";}
+.Btn:hover{ color:#fff; text-decoration:none;}
+.Btn.cancel{ background:#aaa;}
+.infoForm a{ background:#005DAD; border:none; padding:0 10px; height:30px; line-height:28px; text-align:center; border-radius:3px; color:#fff; cursor:pointer; margin-left:5px; display:inline-block; font-family:"微软雅黑";}
+.adminTable table .checkAll{ margin-right:3px; position:relative; top:-1px;}
+.adminTable table .checkbox,.adminTable table span{ display:inline-block; vertical-align:middle; margin-right:5px;}
+.adminTable table a{display:inline-block; vertical-align:middle;}
+.adminTable table .but{ color:#3488dc; margin-right:10px;}
+.adminTable table .edit{ margin:0 5px;}
+.adminTable table .popShow:hover  {color:#cc0000;}
+.adminTable table .popShow.read{font-weight:700;}
+.adminTable table .popShow.readed{ color:#666;}
+/*弹窗*/
+.popMask{ display:none; position:fixed; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.3); z-index:999;}
+.adminPop{ position:fixed; top:50%; left:50%; margin:-178px 0 0 -185px; background:rgba(0,0,0,0.5); padding:10px; border-radius:10px; display:none; z-index:1000;}
+.adminPop  .tip{height:20px; line-height20px; color:#cc0000; display:none;margin-top:10px;}
+.popWrap{ background:#fff; max-height:336px; overflow:hidden; overflow-y:auto; padding-right:20px;}
+.adminBox{ background:#fff; padding:10px;}
+.adminBox i{ background:url(../img/cha.png) no-repeat; width:14px; height:14px; display:inline-block; position:absolute; right:20px; top:20px; cursor:pointer;}
+.adminBox h2{ color:#333; height:30px; line-height:30px; padding:5px 0; font-size:16px; border-bottom:1px solid #ccc;}
+.adminBox .item{ margin:20px 0 0 0;}
+.adminBox .item h3{ color:#333; font-size:14px; height:20px; line-height:20px; margin-bottom:5px;}
+.adminBox .item .form_5{ background:#fff; width:323px;border-radius:3px; height:28px; line-height:28px; padding-left:5px; border:1px solid #ccc; font-family:"微软雅黑";}
+.adminBox .item select{ height:26px; line-height:26px; padding-left:5px; border:1px solid #ccc; font-family:"微软雅黑";}
+.adminBox .item textarea{ padding:5px; border:1px solid #ccc; font-family:"微软雅黑"; width:318px;border-radius:3px; font-size:14px;}
+.form_1{background:#fff; border:1px solid #ccc; border-radius:3px; width:40px; height:28px; line-height:28px; padding-left:5px; margin-right:0px;}
+.form_2{background:#fff; border:1px solid #ccc; border-radius:3px; width:195px; height:28px; line-height:28px; padding-left:5px; margin-right:0px;}
+.form_3{background:#fff; border:1px solid #ccc; border-radius:3px; width:300px; height:28px; line-height:28px; padding-left:5px; margin-right:10px;}
+.form_4{background:#fff; border:1px solid #ccc; border-radius:3px; width:500px; height:28px; line-height:28px; padding-left:5px; margin-right:10px;}
+.form_6{ height:28px; line-height:28px; display:inline-block; vertical-align:middle; border:1px solid #ccc; margin-right:10px; font-family:"微软雅黑";}
+.form_7{ width:60%; border:1px solid #ccc; background:#fff; border-radius:3px; height:350px; font-size:12px; padding:3px 5px; font-family:"微软雅黑"; resize:none;}
+.form_8{ width:318px; height:100px; background:#fff; padding:5px; border:1px solid #ccc; resize:none; font-size:12px;}
+.w150{ width:150px;}
+.w100{ width:100px;}
+.w200{ width:200px;}
+.exportSerch{ margin-bottom:20px;}
+.exportBox{ background:#000; padding:15px; color:#fff; border-radius:3px; height:450px; overflow:auto;}
+.exportBox p{ line-height:20px;}
+/*上传文件*/
+.fileList{}
+.fileList li,.fileList p{ line-height:20px;}
+/*编辑文件*/
+.editFileBox{ background:#fff; margin-top:10px;}
+.editFileBox p{ margin-bottom:10px;}
+/*任务中心*/
+.denger{ background:url(../img/cross_circle.png) no-repeat; width:16px; height:16px; display:inline-block; vertical-align: middle;}
+.alert{ background:url(../img/exclamation.png) no-repeat; width:16px; height:16px; display:inline-block; vertical-align: middle;}
+.success{ background:url(../img/tick_circle.png) no-repeat; width:16px; height:16px; display:inline-block; vertical-align: middle;}
+.task{ height:24px;}
+.task label{ display:inline-block; float:left; height:24px; line-height:24px; margin-right:15px;}
+.task label span{ display:inline-block; padding:0 10px; height:24px; border-radius:5px; float:left; color:#fff;}
+.task label input{ display:inline-block; width:12px; height:12px; float:left; margin:5px 5px 0 0;}
+.task label input i{ float:left;}
+.task label .d{ background:#d64b46;}
+.task label .a{ background:#f9a42a;}
+.task label .s{ background:#5ab45a;}
+/*机柜*/
+.jiguiTab{ background:#fff; border:1px solid #ccc;}
+.jiguiTit{ height:30px; line-height:30px; color:#333; padding:15px; background:#f1f1f1; border-bottom:1px solid #ccc; position:relative;}
+.jiguiTit h2{ font-size:16px; float:left;}
+.jiguiTit ul{ position:absolute; right:15px; top:31px; height:30px;}
+.jiguiTit li{ float:left; color:#333; cursor:pointer; padding:0 10px;}
+.jiguiTit .on{ background:#fff; border-top-left-radius:5px; border-top-right-radius:5px; box-shadow:0 -1px 1px #ccc;}
+.tabMain{ padding:20px; background:#fff;}
+.jiguiBox .jigui{ background:url(../img/jg.png) no-repeat; width:200px; height:480px; float:left; position:relative;}
+.jiguiBox .jigui .jiguiName{ position:absolute; width:105px; height:20px; line-height:20px;left:0px; top:445px; text-align:center; font-size:14px; font-weight:bold;}
+.jigui .machine{ position:absolute; width:105;left:3px;}
+.jigui .machine .infMsg{width:180px; padding:10px 15px; color:#333; background:#eee; position:absolute; top:5px; left:125px; z-index:10; display:none;}
+.jigui .machine .infMsg p{ line-height:20px;}
+.pagination{ height:25px; text-align:right; font-family:"微软雅黑"; margin:20px 0; position:relative; color:#333;}
+.pagination  a:hover{text-decoration:none;}
+.pagination  span,.pagination  a{ display:inline-block; height:25px; line-height:25px; padding:3px 10px; border-radius:3px;  color:#0066cc; text-align:center; margin:0 -1px; border:1px solid #ccc; cursor:pointer}
+.pagination .current{ background:#005dad; border:1px solid #005dad; color:#fff;}

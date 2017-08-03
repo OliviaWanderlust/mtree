@@ -1,0 +1,157 @@
+{% include 'main/base.html' %}
+<SCRIPT type="text/javascript">
+$(document).ready(function() {
+    $("#Frame_main").load(function(){
+        var mainheight = $(this).contents().find("body").height()+30;
+        if (mainheight < 850){ mainheight = 850};
+        $(this).height(mainheight);
+    }); 
+});  
+
+function clickNode(treeid) {
+    $("#treeid").val(treeid);
+    modename = $("#modename").val();
+    if (modename=='dashboard') {
+        $('#modename').val('mtree/host_list');
+    }
+    changeMain();
+}
+
+function clickMode(modename) {
+    $("#modename").val(modename);
+    changeMain();
+}
+
+function changeMain() {
+    modename = $("#modename").val();
+    treeid = $("#treeid").val();
+    $.get("/updatemain", {"modename":modename,"treeid":treeid}, function(data){
+    if (data == 'ok') {
+        url = "/" + modename;
+        $('#Frame_main').attr("src",url);
+    } else {
+       window.location.reload();
+    }
+    });
+}
+</SCRIPT>
+</head>
+  <body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+
+      <header class="main-header">
+        <!-- Logo -->
+        <a href="/" class="logo">
+          <!-- mini logo for sidebar mini 50x50 pixels -->
+          <span class="logo-mini"><b>{{ site_short_name }}</b></span>
+          <!-- logo for regular state and mobile devices -->
+          <span class="logo-lg"><b>{{ site_name }}</b></span>
+        </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top" role="navigation">
+          <!-- Sidebar toggle button-->
+          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+          </a>
+          <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+              <!-- User Account: style can be found in dropdown.less -->
+              <li class="dropdown user user-menu">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <img src="/static/AdminLTE-2.3.0/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                  <span class="hidden-xs">{{ userzhname }}</span>
+                </a>
+                <ul class="dropdown-menu">
+                  <!-- User image -->
+                  <li class="user-header">
+                    <img src="/static/AdminLTE-2.3.0/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                    <!--
+                    <p>
+                      OP
+                      <small>管理员</small>
+                    </p>
+                    -->
+                    <p>用户名: {{ username }}</p>
+                    <p>邮箱: {{ usermail }}</p>
+                  </li>
+                  <!-- Menu Footer-->
+                  <li class="user-footer">
+                    {% if is_superuser %}
+                    <div class="pull-left">
+                      <a href="admin" class="btn btn-default btn-flat">后台中心</a>
+                    </div>
+                    {% endif %}
+                    <div class="pull-right">
+                      <a href="/logout" class="btn btn-default btn-flat">退出</a>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+              <!-- Control Sidebar Toggle Button -->
+            </ul>
+          </div>
+        </nav>
+      </header>
+      <!-- Left side column. contains the logo and sidebar -->
+      <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+          <!-- sidebar menu: : style can be found in sidebar.less -->
+          <ul class="sidebar-menu">
+            <!--<li class="treeview">-->
+            <li class="treeview active">
+              <a href="#"><i class="fa fa-share"></i> <span>产品服务</span><i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <!--<ul class="treeview-menu">-->
+              <ul class="treeview-menu" style="display: block;">
+               <li>
+                    <a href="#"><i class="fa fa-circle-o"></i>用户角色权限管理<i class="fa fa-angle-left pull-right"></i></a>
+                    <ul class="treeview-menu">
+                        <li><a href="#" onclick="clickMode('mtree/role_list');"><i class="fa fa-circle-o"></i>业务树角色列表</a></li>
+                {% if is_user_role_admin %}
+                        <li><a href="#" onclick="clickMode('role_list');"><i class="fa fa-circle-o"></i>用户角色列表</a></li>
+                {% endif %}
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-circle-o"></i>主机挂载管理<i class="fa fa-angle-left pull-right"></i></a>
+                    <ul class="treeview-menu">
+                        <li><a href="#" onclick="clickMode('mtree/idc_list');"><i class="fa fa-circle-o"></i>机房列表</a></li>
+                        <li><a href="#" onclick="clickMode('mtree/host_manage');"><i class="fa fa-circle-o"></i>主机管理</a></li>
+                        <li><a href="#" onclick="clickMode('mtree/host_list');"><i class="fa fa-circle-o"></i>主机列表</a></li>
+                        <li><a href="#" onclick="clickMode('mtree/search_host_mtree');"><i class="fa fa-circle-o"></i>搜索主机挂载节点</a></li>
+                        <li><a href="#" onclick="clickMode('mtree/host_mount');"><i class="fa fa-circle-o"></i>主机挂载</a></li>
+                    </ul>
+                </li>
+                <li><br></li>
+              </ul>
+            </li>
+            <li>
+              <iframe width="100%"  height="850"  style='background-color: #DFDFDF;' frameborder="0" scrolling="yes" src="/mtree/mtree" id="Frame_mtree"></iframe>
+            </li>
+          <!-- search form -->
+          </ul>
+        </section>
+        <!-- /.sidebar -->
+      </aside>
+
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Main content -->
+        <section class="content">
+          <!-- Main row -->
+          <div class="row">
+          </div><!-- /.row (main row) -->
+          <iframe width="100%"  height="850"  style='' frameborder="0" scrolling="yes" src="/{{modename}}" id="Frame_main">
+          </iframe>
+        </section><!-- /.content -->
+      </div><!-- /.content-wrapper -->
+
+      <!-- Add the sidebar's background. This div must be placed
+           immediately after the control sidebar -->
+      <div class="control-sidebar-bg"></div>
+    </div><!-- ./wrapper -->
+<input type="hidden" id="treeid" value="{{ treeid }}">
+<input type="hidden" id="modename" value="{{ modename }}">
+  </body>
+</html>

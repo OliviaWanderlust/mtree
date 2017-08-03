@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>{{title}}</title>
+<link rel="icon" type="image/x-icon" href="https://github.com/favicon.ico" />
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/static/multiselect/lib/google-code-prettify/prettify.css" />
+<link href="/static/css/style.css" rel="stylesheet" type="text/css">
+<script src="/static/js/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+<script type="text/javascript" src="/static/multiselect/dist/js/multiselect.min.js"></script>
+<script src="/static/js/admin.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    //window.prettyPrint && prettyPrint();
+    $('#search').multiselect({
+        search: {
+            left: '<input type="text" name="q" class="form-control" placeholder="Search..." />',
+            right: '<input type="text" name="q" class="form-control" placeholder="Search..." />',
+        },
+        fireSearch: function(value) {
+            return value.length > 3;
+        }
+    });
+    $('#submit').click(function(){
+        var role_id = $("#role_id").val();
+        var act = $("#act").val();
+        var name = $("#name").val();
+        var zh_name = $("#zh_name").val();
+        var desc = $("#desc").val();
+        var users = [];
+        $('#search_to option').each(function(){
+            users.push($(this).attr("value"));
+        });   
+        $.post("ajax_role", {"act":act, "role_id":role_id, "name":name, "zh_name":zh_name, "desc":desc, "users":users.join(",")}, function(json){ 
+            alert(json);
+            //window.location.reload(); 
+            if (window.opener && !window.opener.closed) {
+                window.parent.opener.location.reload();
+            }
+            window.close();
+        });
+    });
+});
+</script>
+</head>
+<body>
+<div class="adminTable">
+<div class="infoForm">    
+<h3>{{title}}</h3>
+<input id="role_id" name="role_id" type="hidden" class="form_2 searchIpnutBtn" value="{{ id }}">
+<input id="act" name="act" type="hidden" class="form_2 searchIpnutBtn" value="add">
+<label class="control-label" for="inputEmail">角色英文名</label>
+<input id="name" name="name" type="text" class="form_2 searchIpnutBtn" value="{{ ret.name }}">
+<br><br>
+<label class="control-label" for="inputEmail">角色中文名</label>
+<input id="zh_name" name="zh_name" type="text" class="form_2 searchIpnutBtn" value="{{ ret.zh_name }}">
+<br><br>
+<label class="control-label" for="inputEmail">角色说明</label>
+<input id="desc" name="desc" type="text" class="form_4 searchIpnutBtn" value="{{ ret.desc }}">
+<br><br>
+<label class="control-label" for="inputEmail">绑定用户</label>
+<div class="row">
+    <div class="col-sm-5">
+        <select name="from[]" id="search" class="form-control" size="8" multiple="multiple">
+            {% for user in users %}
+            <option value={{ user.username }}>{{ user.username }}_{{ user.last_name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    <div class="col-sm-2">
+        <button type="button" id="search_rightAll" class="btn btn-block"><i class="glyphicon glyphicon-forward"></i></button>
+        <button type="button" id="search_rightSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-right"></i></button>
+        <button type="button" id="search_leftSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-left"></i></button>
+        <button type="button" id="search_leftAll" class="btn btn-block"><i class="glyphicon glyphicon-backward"></i></button>
+    </div>
+    
+    <div class="col-sm-5">
+        <select name="to[]" id="search_to" class="form-control" size="8" multiple="multiple">
+        </select>
+    </div>
+</div>
+<br><input id="submit" name="submit" type="submit" value="提交" class="Btn" />
+</div>
+</div>
+</body>
+</html>

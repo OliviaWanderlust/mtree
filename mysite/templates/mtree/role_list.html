@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+<link href="/static/css/style.css" rel="stylesheet" type="text/css">
+<link href="/static/multiple-select/multiple-select.css" rel="stylesheet">
+<script src="/static/js/jquery.min.js" type="text/javascript"></script>
+<script src="/static/multiple-select/jquery.multiple.select.js"></script>
+<script src="/static/js/admin.js" type="text/javascript"></script>
+</head>
+<body>
+<script type="text/javascript">
+function showMyTools(obj, objIdStr) { 
+    $("#roleTitle").val(objIdStr);
+    $('#div_cell_tools').css("left", obj.offset().left);
+    $('#div_cell_tools').css("top", obj.offset().top + obj.outerHeight());
+    $('#div_cell_tools').css("position", "absolute");
+    $('#div_cell_tools').show(); 
+ 
+}    
+   
+function hideDiv()
+    { 
+         $("#div_cell_tools").hide();
+    }
+    $(function() {
+
+        $("#cell_submit").click(function(){ 
+            add_user();
+        });
+        $(".nodeRoleControl").click(function(){ 
+            
+            showMyTools($(this),$(this).attr("title"));
+            
+        }); 
+        $("#cell_close").click(function(){ 
+            $("#div_cell_tools").hide(); 
+        });
+        
+        window.parent.scrollTo(0,0);
+    });
+function change_info(){
+        var args = $("#key").serialize();
+        window.location = window.location.pathname + "?" + args;
+    }
+
+function del_user(act,treeid,username,role_name){
+    if(confirm("确认删除吗？")){ 
+        $.post("/mtree/ajax_mtree", {"act":act, "role_name":role_name, "username":username, "treeid":treeid}, function(json){ 
+            alert(json);
+            window.location.reload();
+        });
+    }
+}
+function add_user(){
+    var title = $("#roleTitle").val();
+    var username = $("#addUser").val();
+    var treeid = $("#treeid").val();
+    title = title.split("|");
+    var act = title[0];
+    var role_name = title[1];
+    $.post("/mtree/ajax_mtree", {"act":act, "role_name":role_name, "username":username, "treeid":treeid}, function(json){ 
+        if (json=='ok'){
+            alert('添加成功');
+            window.location.reload();
+        }else{
+            alert(json);
+        }
+    });
+}
+$(document).ready(function() {
+$("#addUser").keydown(function(e){
+    if(e.keyCode==13){
+        add_user();
+    }
+});
+
+});
+</script>
+<div class="adminTable">
+<section class="content-header">
+<input id="search" name="search" type="submit" style="float:right" value="我的权限" class="Btn" onclick="location='/mtree/my_role_list'"/>
+    <h1>{{title}}</h1>
+</section>当前位置:{{ treeid|get_node_path_by_treeid }}
+<input id="treeid" name="treeid" type="hidden" class="form_2 searchIpnutBtn" value="{{ treeid }}">
+<table width="100%" border="1" cellspacing="0" cellpadding="0">
+<thead>
+  <tr>
+    <th align="left" valign="middle">角色</th>
+    <th align="left" valign="middle">角色描述</th>
+    <th align="left" valign="middle">人员</th>
+    <th align="center" valign="middle">申请权限</th>
+  </tr>
+</thead>
+<tbody>
+{% for ret in rets %}
+  <tr id={{ret.username}}>
+    <td align="left" valign="middle">{{ret.zh_name}}{% ifequal ret.is_admin 1 %}<a href="javascript:void(0);"><img title="adduser|{{ret.name}}" class="nodeRoleControl" src="/static/img/tick_add.png"></a>{%endifequal%}</td>
+    <td align="left" valign="middle">{{ret.desc}}</td>
+    <td align="left" valign="middle">{% for user in ret.cur_users %}[{{ user.0 }}{% ifequal ret.is_admin 1 %}<a href="javascript:void(0);" class="handle" onclick="del_user('deluser','{{treeid}}','{{user.0}}','{{ret.name}}')"');"><img src="/static/img/cross.png" alt="Delete"></a>{%endifequal%}] {% endfor %} {% for user in ret.users %}[{{ user.0 }}] {% endfor %}</td>
+    <td align="center" valign="middle">{% ifequal ret.flag 0 %}<a href="javascript:void(0);" class="handle" onclick="alert('预留与工作流对接');return false;openWin('xxx?order_id={{order_id}}&treeid={{treeid}}&role={{ret.name}}');"><img title='申请权限' src="/static/img/pencil.png" alt="Edit"></a>{% else %}已授权{% endifequal %}</td>
+  </tr>
+{% endfor %}
+</tbody>
+</table>
+<div id="div_cell_tools" style="display:none;background-color:#F2F6F9;filter:alpha(opacity=50,Style=0);height:25px" >
+    <table   cellSpacing=0 cellPadding=0 border=1 style="background-color:#F2F6F9;border: solid thin red">
+       <tr>
+           <td id="cellShowDetail" style="border-right-width:0px"> 新增用户名 <input type="text" id="addUser" name="addUser" value=""> <input type="hidden" id="roleTitle" name="roleTitle" value=""> 
+           </td><td style="border-right-width:0px;border-left-width:0px" >          
+               <a id="cell_submit"><img src="/static/img/tick_circle.png"></a>                 
+           <td style="border-left-width:0px">
+               <a id="cell_close"><img src="/static/img/cross_circle.png"></a>                 
+           </td>
+       </tr>
+   </table> 
+</div>
+</div>
+</body>
+</html>

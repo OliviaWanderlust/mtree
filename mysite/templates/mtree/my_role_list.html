@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+<link href="/static/css/style.css" rel="stylesheet" type="text/css">
+<link href="/static/multiple-select/multiple-select.css" rel="stylesheet">
+<script src="/static/js/jquery.min.js" type="text/javascript"></script>
+<script src="/static/multiple-select/jquery.multiple.select.js"></script>
+<script src="/static/js/admin.js" type="text/javascript"></script>
+</head>
+<body>
+<script type="text/javascript">
+function change_info(){
+        var args = $("#key").serialize();
+        window.location = window.location.pathname + "?" + args;
+    }
+
+function del_user(act,treeid,username,role_name){
+    if(confirm("确认删除吗？")){
+        $.post("/mtree/ajax_mtree", {"act":act, "role_name":role_name, "username":username, "treeid":treeid}, function(json){
+            alert(json);
+            window.location.reload();
+        });
+    }
+}
+$(document).ready(function() {
+$("#key").keydown(function(e){
+    if(e.keyCode==13){
+        change_info()
+    }
+});
+
+});
+</script>
+<div class="adminTable">
+<section class="content-header">
+<input id="search" name="search" type="submit" style="float:right" value="搜索" class="Btn" onclick="change_info()"/><input id="key" name="key" type="text" class="form_2" style="float:right" value="{{ key }}"/>
+    <h1>{{title}}</h1>
+</section>
+<table width="100%" border="1" cellspacing="0" cellpadding="0">
+<thead>
+  <tr>
+    <th align="left" valign="middle">权限</th>
+    <th align="left" valign="middle">节点</th>
+  </tr>
+</thead>
+<tbody>
+{% for ret in rets %}
+  <tr>
+    <td align="left" valign="middle">{{ret.role.name}}</td>
+    <td align="left" valign="middle">{% for tree in ret.trees.all %}
+        {% ifequal deep 0 %}
+            {% ifequal tree.en_name 'BackupPool' %}{{ tree.id|get_node_path_by_treeid }}{% endifequal %}
+        {% else %}
+           {{ tree.id|get_node_path_by_treeid }}
+        {% endifequal %}
+<a href="javascript:void(0);" class="handle" onclick="del_user('deluser','{{tree.id}}','{{user.username}}','{{ret.role.name}}');"><img src="/static/img/cross.png" alt="Delete"></a><br>
+{% endfor %}</td>
+  </tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</body>
+</html>

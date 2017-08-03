@@ -1,0 +1,15 @@
+/* CSS Document */
+HTML{FONT-FAMILY:"微软雅黑"; text-align:left;word-break:break-all;text-overflow:ellipsis; }
+body{FONT-SIZE:12px; COLOR:#666;}
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td{padding:0; margin:0;}
+ul,li{list-style:none;margin:0px;padding:0px}
+form{ padding:0px; margin:0px}
+td{FONT-SIZE:12px}
+img{border:0px}
+a{TEXT-DECORATION:none;blr:expression(this.onFocus=this.blur());}
+a:hover{color:#cc0001; text-decoration:underline;}
+input, select { vertical-align: middle;}
+.clear{clear:both; font-size:0; line-height:0; height:0;}
+
+.clearfix:after{clear:both;display:block;content:"...";visibility:hidden;height:0;font-size:0;}
+.clearfix{*zoom:1;}

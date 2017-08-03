@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>{{title}}</title>
+<link rel="icon" type="image/x-icon" href="https://github.com/favicon.ico" />
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/static/multiselect/lib/google-code-prettify/prettify.css" />
+<link href="/static/css/style.css" rel="stylesheet" type="text/css">
+<script src="/static/js/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+<script type="text/javascript" src="/static/multiselect/dist/js/multiselect.min.js"></script>
+<script src="/static/js/admin.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    //window.prettyPrint && prettyPrint();
+    $('#search').multiselect({
+        search: {
+            left: '<input type="text" name="q" class="form-control" placeholder="Search..." />',
+            right: '<input type="text" name="q" class="form-control" placeholder="Search..." />',
+        },
+        fireSearch: function(value) {
+            return value.length > 1;
+        }
+    });
+    $('#node').change(function(){
+        var tree_id = $("#tree_id").val();
+        var mount_node = $(this).children('option:selected').val();
+        window.location = "/mtree/host_mount?treeid=" + tree_id + "&mount_node=" + mount_node;
+/*
+        $.getJSON("/mtree/get_hosts_by_treeid", {"treeid":treeid}, function(json){
+            $("#search_to").empty();
+            $.each(json,function(i,el){
+                $('#search_to').append("<option value='" +el[0] + "'>" + el[0] + "_" + el[1] + "</option>");
+            });
+        });
+*/
+    });
+    $('#submit').click(function(){
+        var act = $("#act").val();
+        var mount_node = $("#node").children('option:selected').val();
+        var hosts = [];
+        $('#search_to option').each(function(){
+            hosts.push($(this).attr("value"));
+        });   
+        $.post("ajax_mtree", {"act":act, "mount_node":mount_node, "hosts":hosts.join(",")}, function(json){ 
+            alert(json);
+            if(json != '操作成功'){ window.location.reload(); }
+            if (window.opener && !window.opener.closed) {
+                window.parent.opener.location.reload();
+            }
+            window.close();
+        });
+    });
+});
+</script>
+</head>
+<body style='background-color:#ecf0f5'>
+<div class="adminTable" style='width:95%'>
+<div class="infoForm">    
+<section class="content-header">
+    <h3><b>{{title}}</b></h3>
+</section>当前位置:{{ treeid|get_node_path_by_treeid }}<br><br>
+<input id="tree_id" name="tree_id" type="hidden" class="form_2 searchIpnutBtn" value="{{ treeid }}">
+<input id="act" name="act" type="hidden" class="form_2 searchIpnutBtn" value="mount">
+<label class="control-label" for="inputEmail">挂载节点</label><br>
+<select name="node" id="node" class="form_4">
+<!--{% ifnotequal mount_nodes|length 1 %}
+    <option value='' selected="selected">请选择挂载节点</option>
+{% endifnotequal %}
+-->
+{% for node in mount_nodes %}
+    <option {% ifequal mount_node node.id %} selected="selected"{% endifequal %}  value={{ node.id }}>{{ node.id|get_node_path_by_treeid }}</option>
+{% endfor %}
+</select>
+<br><br>
+<label class="control-label" for="inputEmail">主机</label>
+<div class="row">
+    <div class="col-sm-5">
+        <select name="from[]" id="search" class="form-control" size="15" multiple="multiple">
+            {% for host in all_host %}
+            <option value={{ host.id }}>{{ host.hostname }}_{{ host.ip}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    <div class="col-sm-2">
+        <button type="button" id="search_rightAll" class="btn btn-block"><i class="glyphicon glyphicon-forward"></i></button>
+        <button type="button" id="search_rightSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-right"></i></button>
+        <button type="button" id="search_leftSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-left"></i></button>
+        <button type="button" id="search_leftAll" class="btn btn-block"><i class="glyphicon glyphicon-backward"></i></button>
+    </div>
+    
+    <div class="col-sm-5">
+        <select name="to[]" id="search_to" class="form-control" size="15" multiple="multiple">
+            {% for host in hosts %}
+            <option value={{ host.id }}>{{ host.hostname }}_{{ host.ip}}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+<br><input id="submit" name="submit" type="submit" value="提交" class="Btn" />
+</div>
+</div>
+</body>
+</html>

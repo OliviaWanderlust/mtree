@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+<TITLE> ZTREE DEMO - select menu</TITLE>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="/static/zTree_v3.5.28/css/demo.css" type="text/css">
+<link href="/static/css/style.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="/static/zTree_v3.5.28/css/zTreeStyle/zTreeStyle.css" type="text/css">
+<style type="text/css">
+div#rMenu {position:absolute; visibility:hidden; top:0; background-color: #555;text-align: left;padding: 2px;}
+div#rMenu ul li{
+    margin: 1px 0;
+    padding: 0 5px;
+    cursor: pointer;
+    list-style: none outside none;
+    background-color: #DFDFDF;
+}
+</style>
+<script type="text/javascript" src="/static/zTree_v3.5.28/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="/static/zTree_v3.5.28/js/jquery.ztree.core.js"></script>
+<script type="text/javascript" src="/static/zTree_v3.5.28/js/jquery.ztree.excheck.js"></script>
+<script type="text/javascript" src="/static/zTree_v3.5.28/js/jquery.ztree.exedit.js"></script>
+<script src="/static/js/admin.js" type="text/javascript"></script>
+<SCRIPT type="text/javascript">
+var setting = {
+    data: {
+        key: {
+            title:"id"
+        },
+        simpleData: {
+            enable: true
+        }
+    },
+    view: {
+        fontCss: getFontCss
+    },
+    edit: {
+        drag: {
+            {% if is_mtree_admin %} 
+                isMove : true,
+            {% else %}
+                isMove : false,
+            {% endif %}
+            isCopy : false,
+            prev : false,
+            //inner : true,
+            next : false,
+        },
+        enable: true,
+        showRemoveBtn: false,
+        showRenameBtn: false
+    },
+    callback: {
+        onClick: onClick,
+        onRightClick: OnRightClick,
+        beforeEditName: beforeEditName,
+        beforeRename: beforeRename,
+        onRename: onRename,
+        beforeDrag: beforeDrag,
+        beforeDrop: beforeDrop
+    }
+};
+
+function onClick(event, treeId, treeNode, clickFlag) {
+    window.parent.clickNode(treeNode.id); 
+};
+
+function OnRightClick(event, treeId, treeNode) {
+    if (!treeNode && event.target.tagName.toLowerCase() != "button" && $(event.target).parents("a").length == 0) {
+        zTree.cancelSelectedNode();
+    } else if (treeNode && treeNode.showid == 1) {
+        zTree.selectNode(treeNode,false,true);
+        showRMenu("root", event.clientX, event.pageY);
+    } else if (treeNode && treeNode.showid == 2) {
+        zTree.selectNode(treeNode,false,true);
+        showRMenu("node", event.clientX, event.pageY);
+    }
+}
+
+function showRMenu(type, x, y) {
+    $("#rMenu ul").show();
+    if (type=="root") {
+        $("#m_add").hide();
+    } else {
+        $("#m_add").show();
+    }
+    rMenu.css({"top":y+"px", "left":x+"px", "visibility":"visible"});
+    $("body").bind("mousedown", onBodyMouseDown);
+}
+
+function hideRMenu() {
+    if (rMenu) rMenu.css({"visibility": "hidden"});
+    $("body").unbind("mousedown", onBodyMouseDown);
+}
+
+function onBodyMouseDown(event){
+    if (!(event.target.id == "rMenu" || $(event.target).parents("#rMenu").length>0)) {
+        rMenu.css({"visibility" : "hidden"});
+    }
+}
+
+function addTreeNode() {
+    hideRMenu();
+    var name = prompt("请输入节点名","");
+    if (name) {
+    if (zTree.getSelectedNodes()[0]) {
+        pid = zTree.getSelectedNodes()[0].id;
+        $.post("/mtree/ajax_mtree", {"act":"addnode", "name":name,'pid':pid}, function(json){
+            if(json.error){
+                alert(json.error);
+                window.location.reload();
+            }else{
+                var newNode = {id:json.id, name:name,showid:json.showid,iconSkin:'icon0'+json.deep};
+                newNode.checked = zTree.getSelectedNodes()[0].checked;
+                zTree.addNodes(zTree.getSelectedNodes()[0], newNode);
+            }
+        },'json');
+    } else {
+        alert('未选中节点');
+        //zTree.addNodes(null, newNode);
+    }
+    }
+}
+
+function removeTreeNode() {
+    hideRMenu();
+    var nodes = zTree.getSelectedNodes();
+    var treeid = nodes[0].id;
+    if (nodes && nodes.length>0) {
+        if (nodes[0].children && nodes[0].children.length > 0) {
+            var msg = "确认要删除父节点？如果删除将连同子节点将被一起删掉。";
+        }else{
+            var msg = "确认删除该节点？";
+        }
+        if (confirm(msg)==true){
+            $.post("/mtree/ajax_mtree", {"act":"delnode", "treeid":treeid}, function(json){
+                if(json.error){
+                    alert(json.error);
+                    window.location.reload();
+                }else{
+                    zTree.removeNode(nodes[0]);
+                }
+            },'json');
+        }
+
+    }
+}
+
+function onRename(event, treeId, treeNode, isCancel) {
+    $.post("/mtree/ajax_mtree", {"act":"editnode", "treeid":treeNode.id,'name':treeNode.name}, function(json){
+        if(json.error){
+            alert(json.error);
+            window.location.reload();
+        }else{
+            alert('修改成功');
+        }
+    },'json');
+}
+function beforeEditName(treeId, treeNode) {
+    return true;
+}
+function beforeRename(treeId, treeNode, newName, isCancel) {
+    if (newName.length > 0) {
+        return true;
+    }else{
+        alert('节点名不能为空');
+        return false;
+    }
+}
+
+function edit() {
+    hideRMenu();
+    nodes = zTree.getSelectedNodes(),
+    treeNode = nodes[0];
+    if (nodes.length == 0) {
+        alert("请先选择一个节点");
+        return;
+    }
+    zTree.editName(treeNode);
+}
+
+function beforeDrag(treeId, treeNodes) {
+    for (var i=0,l=treeNodes.length; i<l; i++) {
+        if (treeNodes[i].drag === false) {
+            return false;
+        }
+    }
+    return true;
+}
+function beforeDrop(treeId, treeNodes, targetNode, moveType) {
+    $.post("/mtree/ajax_mtree", {"act":"dropnode", 'treeid':treeNodes[0].id, 'dtreeid':targetNode.id},function(json){
+         if(json.error){
+            alert(json.error);
+            window.location.reload();
+        }else{
+            alert('修改成功,请在拖拽完之后访问/mtree/refresh_mtree,刷新基因链');
+        }       
+    },'json');
+    return targetNode ? targetNode.drop !== false : true;
+}
+
+function searchNode(e) {
+    var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+    var value = $.trim(key.get(0).value);
+    var keyType = "name";
+    if (lastValue === value) return;
+    lastValue = value;
+    if (value === "") return;
+    updateNodes(false);
+    nodeList = zTree.getNodesByParamFuzzy(keyType, value);
+    updateNodes(true);
+}
+function getFontCss(treeId, treeNode) {
+    return (!!treeNode.highlight) ? {color:"#A60000", "font-weight":"bold"} : {color:"#333", "font-weight":"normal"};
+}
+function focusKey(e) {
+    if (key.hasClass("empty")) {
+        key.removeClass("empty");
+    }
+}
+function updateNodes(highlight) {
+    var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+    for( var i=0, l=nodeList.length; i<l; i++) {
+        nodeList[i].highlight = highlight;
+        zTree.expandNode(nodeList[i].getParentNode(), true, false, false); 
+        zTree.updateNode(nodeList[i]);
+    }
+}
+var zTree, rMenu, key;
+var lastValue = "", nodeList = [], fontCss = {};
+var zNodes = {% autoescape off %} {{ zNodes }} {% endautoescape %}; 
+$(document).ready(function(){
+    zTree = $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+    var node = zTree.getNodeByParam("id",{{treeid}});
+    rMenu = $("#rMenu");
+    zTree.selectNode(node);
+    //默认展开
+    if ({{treeid}} == 1) {
+        zTree.expandNode(node, true, false, false); 
+    }
+    key = $("#key");
+    key.bind("focus", focusKey)
+    .bind("input", searchNode);
+});
+</SCRIPT>
+</HEAD>
+
+<BODY>
+<section class="content-header">
+<input id="key" name="key" type="text" class="form_2 w50" style="float;margin-left:12px;margin-top:5px" placeholder="搜索树节点"/>
+</section>
+<div class="zTreeDemoBackground left">
+    <div id="treeDemo" class="ztree"></div>
+</div>
+<div id="rMenu">
+    <ul>
+        <li id="m_add" onclick="addTreeNode();">增加节点</li>
+        <li id="edit" onclick="edit();">修改节点</li>
+        <li id="m_del" onclick="removeTreeNode();">删除节点</li>
+    </ul>
+</div>
+</BODY>
+</HTML>

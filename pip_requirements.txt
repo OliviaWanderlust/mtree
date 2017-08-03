@@ -1,0 +1,17 @@
+amqp==1.4.9
+anyjson==0.3.3
+billiard==3.3.0.22
+celery==3.1.20
+Django==1.9.2
+django-auth-ldap==1.2.8
+django-celery==3.1.17
+django-crontab==0.7.1
+django-pagination==1.0.7
+itsdangerous==0.24
+kombu==3.0.33
+MySQL-python==1.2.5
+python-ldap==2.4.28
+pytz==2015.7
+redis==2.10.5
+requests==2.9.1
+xpinyin==0.5.5
