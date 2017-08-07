@@ -7,8 +7,6 @@ import os
 import json
 import re
 import requests
-import MySQLdb
-import salt.client
 from celery import task,platforms
 from django.contrib.auth.models import User
 from django.conf import settings
